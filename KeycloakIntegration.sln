@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "app", "app\app.csproj", "{7794F69A-94EF-46F8-9D8C-E595C35D2536}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeycloakIntegration", "KeycloakIntegration\KeycloakIntegration.csproj", "{8CBA944A-8D50-441D-8213-69F250E84396}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7794F69A-94EF-46F8-9D8C-E595C35D2536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7794F69A-94EF-46F8-9D8C-E595C35D2536}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7794F69A-94EF-46F8-9D8C-E595C35D2536}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7794F69A-94EF-46F8-9D8C-E595C35D2536}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CBA944A-8D50-441D-8213-69F250E84396}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CBA944A-8D50-441D-8213-69F250E84396}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CBA944A-8D50-441D-8213-69F250E84396}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CBA944A-8D50-441D-8213-69F250E84396}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A49FE716-46C7-4F42-8A20-493F951ABBC7}
+		SolutionGuid = {1BFBE71E-D1C8-48E6-866D-F51C8AB521EA}
 	EndGlobalSection
 EndGlobal

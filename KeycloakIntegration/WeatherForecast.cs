@@ -1,6 +1,6 @@
 using System;
 
-namespace app
+namespace KeycloakIntegration
 {
     public class WeatherForecast
     {

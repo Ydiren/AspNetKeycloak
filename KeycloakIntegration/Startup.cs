@@ -6,11 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace app
+namespace KeycloakIntegration
 {
     using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.IdentityModel.Tokens;
+    using Microsoft.AspNetCore.Authorization;
 
     public class Startup
     {
@@ -27,46 +26,24 @@ namespace app
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o =>
-            {
-                o.Authority = Configuration["Jwt:Authority"];
-                o.Audience = Configuration["Jwt:Audience"];
-                o.RequireHttpsMetadata = Environment.IsProduction();
-                o.SaveToken = true;
-                o.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateAudience = false, 
-                    ValidateIssuer = false,
-                    ValidateIssuerSigningKey = true
-                };
-                o.Events = new JwtBearerEvents()
-                {
-                    OnAuthenticationFailed = c =>
-                    {
-                        c.NoResult();
-
-                        c.Response.StatusCode = 500;
-                        c.Response.ContentType = "text/plain";
-                        if (Environment.IsDevelopment())
-                        {
-                            return c.Response.WriteAsync(c.Exception.ToString());
-                        }
-
-                        return c.Response.WriteAsync("An error occured processing your authentication");
-                    }
-                };
-            });
-
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddAuthentication(options=>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = Configuration["Jwt:Authority"];
+                options.Audience = Configuration["Jwt:Audience"];
+                options.RequireHttpsMetadata = false;
+            });
+
+            services.AddAuthorization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,18 +60,17 @@ namespace app
                 app.UseHsts();
             }
 
-            app.UseAuthentication();
-            app.UseAuthorization();
-
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
             }
-            app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
