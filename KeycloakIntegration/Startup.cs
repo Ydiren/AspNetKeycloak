@@ -1,6 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,9 +8,6 @@ using Microsoft.Extensions.Hosting;
 
 namespace KeycloakIntegration
 {
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Authorization;
-
     public class Startup
     {
         public Startup(IConfiguration configuration, IWebHostEnvironment environment)
@@ -25,14 +22,7 @@ namespace KeycloakIntegration
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-            // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
-
-            services.AddAuthentication(options=>
+            services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -43,7 +33,20 @@ namespace KeycloakIntegration
                 options.RequireHttpsMetadata = false;
             });
 
-            services.AddAuthorization();
+            // Validate Scopes
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("read:messages", policy => policy.Requirements.Add(new HasScopeRequirement("read:messages", Configuration["Jwt:Authority"])));
+            //});
+
+            //services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+
+
+            services.AddControllersWithViews();
+
+            // In production, the Angular files will be served from this directory
+
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +59,7 @@ namespace KeycloakIntegration
             else
             {
                 app.UseExceptionHandler("/Error");
+
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
