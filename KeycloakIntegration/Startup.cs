@@ -1,4 +1,7 @@
+using KeycloakIntegration.AuthorisationHandlers;
+using KeycloakIntegration.AuthorisationRequirements;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -34,12 +37,12 @@ namespace KeycloakIntegration
             });
 
             // Validate Scopes
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("read:messages", policy => policy.Requirements.Add(new HasScopeRequirement("read:messages", Configuration["Jwt:Authority"])));
-            //});
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("read:messages", policy => policy.Requirements.Add(new HasScopeRequirement("read:messages", Configuration["Jwt:Authority"])));
+            });
 
-            //services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
 
             services.AddControllersWithViews();

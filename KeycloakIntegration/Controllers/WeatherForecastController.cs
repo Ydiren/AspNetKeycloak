@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace KeycloakIntegration.Controllers
 {
-    [Authorize]
+    [Authorize("read:messages")]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
